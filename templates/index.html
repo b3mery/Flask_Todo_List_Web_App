@@ -1,0 +1,55 @@
+{% include "header.html" %}
+
+<body>
+
+<div class="list-group w-auto" id="todo_list">
+  <h1>Todo List</h1>
+  <form id="item-form" name="item-form" action="{{url_for('complete_items')}}" method="post" validate>
+    <button type="submit" class="btn btn-primary">Update List</button>
+    <div id="list_wrapper" class="todo-scroll">
+    {% for item in items %}
+    <label class="list-group-item d-flex gap-3">
+      <input class="form-check-input flex-shrink-0" type="checkbox" value="0" style="font-size: 1.375em;" name="{{item.id}}_checkbox" id="{{item.id}}_checkbox">
+      <span class="pt-1 form-checked-content">
+        <strong name="item-name" id="item-name">{{item.name}}</strong>
+      </span>
+    </label>
+    {% endfor %}
+    </div>
+  </form>
+
+  <form id="new-item-form" action="{{url_for('add_new_item')}}" method="post" validate>
+    <label class="list-group-item d-flex gap-3 bg-light">
+      <input class="form-check-input form-check-input-placeholder bg-light flex-shrink-0 pe-none" disabled type="checkbox" value="" style="font-size: 1.375em;">
+      <span class="pt-1 form-checked-content col-sm-10">
+        <input contenteditable="true" class="w-100" type="text" placeholder="Add new task..." name="new-item" id="new-item">
+        <input type="submit" hidden >
+      </span>
+    </label>
+  </form>
+
+</div>
+{%if completed_items|count >0 : %} 
+<div class="list-group w-auto" id="completed_list">
+  <h2>Completed Items</h2>
+
+  <form id="item-form" name="item-form" action="{{url_for('revert_item_status')}}" method="post" validate>
+    <button type="submit" class="btn btn-secondary">Update List</button>
+    <div id="list_wrapper" class="todo-scroll">
+    {% for item in completed_items %}
+    <label class="list-group-item d-flex gap-3">
+      <input class="form-check-input flex-shrink-0" type="checkbox" checked value=0 style="font-size: 1.375em;" name="{{item.id}}_checkbox" id="{{item.id}}_checkbox">
+      <span class="pt-1 form-checked-content">
+        <strong name="item-name" id="item-name">{{item.name}}</strong>
+        <p>Completed On: {{item.completed_datetime}}</p>
+      </span>
+    </label>
+    {% endfor %}
+    </div>
+  </form>
+</div>
+{% endif %}
+
+</body> 
+
+{% include "footer.html" %}
